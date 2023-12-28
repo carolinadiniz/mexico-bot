@@ -1,0 +1,19 @@
+{
+  "name": "mexico-bot",
+  "version": "3.0.0",
+  "description": "Um bot criado para servidor do discord de GTA RP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolinadiniz/mexico-bot.git"
+  },
+  "author": "Carolina Diniz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carolinadiniz/mexico-bot/issues"
+  },
+  "homepage": "https://github.com/carolinadiniz/mexico-bot#readme"
+}
