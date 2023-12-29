@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/carolinadiniz/mexico-bot/issues"
   },
-  "homepage": "https://github.com/carolinadiniz/mexico-bot#readme"
+  "homepage": "https://github.com/carolinadiniz/mexico-bot#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
 }
