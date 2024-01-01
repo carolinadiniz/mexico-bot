@@ -1,5 +1,10 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, embedLength } = require('discord.js')
+const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, embedLength, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ComponentType } = require('discord.js')
 const wait = require('node:timers/promises').setTimeout
+const armaModal = require('../modal/bau/arma')
+const muniModal = require('../modal/bau/municao')
+const coleteModal = require('../modal/bau/colete')
+const outroModal = require('../modal/bau/outro')
+const { mexico, haru } = require('../json/channels.json')
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -135,6 +140,55 @@ module.exports = {
                         components: [],
                     })
                 }
+            } else if (interaction.customId === 'formbau') {
+
+                const embed = new EmbedBuilder()
+                    .setTitle("Qual categoria de item está sendo retirado?")
+
+
+                const arma = new ButtonBuilder()
+                    .setCustomId('bau_arma')
+                    .setLabel('Arma')
+                    .setStyle(ButtonStyle.Secondary)
+
+                const municao = new ButtonBuilder()
+                    .setCustomId('bau_muni')
+                    .setLabel('Munição')
+                    .setStyle(ButtonStyle.Secondary)
+
+                const colete = new ButtonBuilder()
+                    .setCustomId('bau_colete')
+                    .setLabel('Colete')
+                    .setStyle(ButtonStyle.Secondary)
+
+                const outro = new ButtonBuilder()
+                    .setCustomId('bau_outro')
+                    .setLabel('Outro')
+                    .setStyle(ButtonStyle.Secondary)
+
+                let row = new ActionRowBuilder()
+                    .addComponents(arma, municao, colete, outro)
+
+                interaction.reply({
+                    ephemeral: true,
+                    components: [row],
+                    embeds: [embed]
+                }).then(
+                    /*
+                    msg => setTimeout(() => {
+                        msg.delete()
+                    }, 15000)*/
+                )
+
+
+            } else if (interaction.customId === 'bau_arma') {
+                await armaModal(interaction)
+            } else if (interaction.customId === 'bau_muni') {
+                await muniModal(interaction)
+            } else if (interaction.customId === 'bau_colete') {
+                await coleteModal(interaction)
+            } else if (interaction.customId === 'bau_outro') {
+                await outroModal(interaction)
             }
 
 
@@ -151,7 +205,7 @@ module.exports = {
                     .then(msg => {
                         setTimeout(() => {
                             msg.delete()
-                        }, 30000);
+                        }, 15000);
                     })
 
 
@@ -182,7 +236,7 @@ module.exports = {
                     .setEmoji("✖️")
                     .setStyle(ButtonStyle.Danger)
 
-                const row = new ActionRowBuilder()
+                let row = new ActionRowBuilder()
                     .addComponents(aprovar, reprovar)
 
 
@@ -194,6 +248,150 @@ module.exports = {
 
             }
 
+            if (interaction.customId === 'bauArmaModal') {
+
+                const armaInput = interaction.fields.getTextInputValue('armaInput')
+                const quantInput = interaction.fields.getTextInputValue('quantInput')
+                const membroInput = interaction.fields.getTextInputValue('membroInput')
+
+                const embedSet = new EmbedBuilder()
+                    .setTitle('Armamento')
+                    .addFields(
+                        { "name": "Arma", "value": armaInput, "inline": true },
+                        { "name": "Quantidade", "value": quantInput, "inline": true },
+                        { "name": "Membro", "value": membroInput, "inline": false }
+                    )
+                    .setFooter({
+                        text: interaction.member.nickname,
+                        iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.jpg`
+                    })
+                    .setTimestamp(interaction.message.createTimestamp)
+
+                const guildId = interaction.guildId
+                await client.guilds.cache.get(guildId).channels.cache.get(mexico.bauChannel).send({
+                    content: `<@${interaction.user.id}>`,
+                    embeds: [embedSet]
+                })
+                await interaction.update({
+                    content: 'Formulário enviado com sucesso!',
+                    embeds: [],
+                    components: []
+                })
+                .then( msg => {
+                    setTimeout(() => {
+                        msg.delete()
+                    }, 3000);
+                    
+                })
+            }
+
+            if (interaction.customId === 'bauMuniModal') {
+
+                const muniInput = interaction.fields.getTextInputValue('muniInput')
+                const quantInput = interaction.fields.getTextInputValue('quantInput')
+                const membroInput = interaction.fields.getTextInputValue('membroInput')
+
+                const embedSet = new EmbedBuilder()
+                    .setTitle('Munição')
+                    .addFields(
+                        { "name": "Arma", "value": muniInput, "inline": true },
+                        { "name": "Quantidade", "value": quantInput, "inline": true },
+                        { "name": "Membro", "value": membroInput, "inline": false }
+                    )
+                    .setFooter({
+                        text: interaction.member.nickname,
+                        iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.jpg`
+                    })
+                    .setTimestamp(interaction.message.createTimestamp)
+
+                const guildId = interaction.guildId
+                await client.guilds.cache.get(guildId).channels.cache.get(mexico.bauChannel).send({
+                    content: `<@${interaction.user.id}>`,
+                    embeds: [embedSet]
+                })
+                await interaction.update({
+                    content: 'Formulário enviado com sucesso!',
+                    embeds: [],
+                    components: []
+                })
+                .then( msg => {
+                    setTimeout(() => {
+                        msg.delete()
+                    }, 3000);
+                    
+                })
+            }
+
+
+            if (interaction.customId === 'bauColeteModal') {
+
+                const quantInput = interaction.fields.getTextInputValue('quantInput')
+
+                const embedSet = new EmbedBuilder()
+                    .setTitle('Colete')
+                    .addFields(
+                        { "name": "Quantidade", "value": quantInput, "inline": true }
+                    )
+                    .setFooter({
+                        text: interaction.member.nickname,
+                        iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.jpg`
+                    })
+                    .setTimestamp(interaction.message.createTimestamp)
+
+                const guildId = interaction.guildId
+                await client.guilds.cache.get(guildId).channels.cache.get(mexico.bauChannel).send({
+                    content: `<@${interaction.user.id}>`,
+                    embeds: [embedSet]
+                })
+                await interaction.update({
+                    content: 'Formulário enviado com sucesso!',
+                    embeds: [],
+                    components: []
+                })
+                .then( msg => {
+                    setTimeout(() => {
+                        msg.delete()
+                    }, 3000);
+                    
+                })
+            }
+
+            if (interaction.customId === 'bauOutroModal') {
+
+                const outroInput = interaction.fields.getTextInputValue('outroInput')
+                const quantInput = interaction.fields.getTextInputValue('quantInput')
+                const membroInput = interaction.fields.getTextInputValue('membroInput')
+
+                const embedSet = new EmbedBuilder()
+                    .setTitle('Munição')
+                    .addFields(
+                        { "name": "Item", "value": outroInput, "inline": true },
+                        { "name": "Quantidade", "value": quantInput, "inline": true },
+                        { "name": "Membro", "value": membroInput, "inline": false }
+                    )
+                    .setFooter({
+                        text: interaction.member.nickname,
+                        iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.jpg`
+                    })
+                    .setTimestamp(interaction.message.createTimestamp)
+
+                const guildId = interaction.guildId
+                await client.guilds.cache.get(guildId).channels.cache.get(mexico.bauChannel).send({
+                    content: `<@${interaction.user.id}>`,
+                    embeds: [embedSet]
+                })
+                await interaction.update({
+                    content: 'Formulário enviado com sucesso!',
+                    embeds: [],
+                    components: []
+                })
+                .then( msg => {
+                    setTimeout(() => {
+                        msg.delete()
+                    }, 3000);
+                    
+                })
+            }
         }
     },
 };
