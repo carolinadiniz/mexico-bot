@@ -13,7 +13,7 @@ module.exports = async (interaction) => {
         .setStyle(TextInputStyle.Short)
         .setRequired(true)
         .setMinLength(2)
-        .setMaxLength(11)
+        .setMaxLength(30)
 
     const quantInput = new TextInputBuilder()
         .setCustomId('quantInput')

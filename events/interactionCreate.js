@@ -223,6 +223,7 @@ module.exports = {
                         { "name": "Celular", "value": celularInput, "inline": false },
                         { "name": "Recrutador", "value": recrutadorInput, "inline": false }
                     )
+                    .setThumbnail(`https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.jpg`)
 
                 const aprovar = new ButtonBuilder()
                     .setCustomId('aprovar')
@@ -363,7 +364,7 @@ module.exports = {
                 const membroInput = interaction.fields.getTextInputValue('membroInput')
 
                 const embedSet = new EmbedBuilder()
-                    .setTitle('Munição')
+                    .setTitle('Outro')
                     .addFields(
                         { "name": "Item", "value": outroInput, "inline": true },
                         { "name": "Quantidade", "value": quantInput, "inline": true },

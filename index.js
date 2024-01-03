@@ -44,4 +44,4 @@ for (const file of eventFiles) {
 
 client.cooldowns = new Collection();
 
-client.login(token.maya);
+client.login(token.mexico);
